@@ -1,5 +1,5 @@
 <!--
-  Copyright 2012 The Softus Team.
+  Copyright 2012-2013 The Softus Team.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -23,30 +23,19 @@
     <groupId>org.softus</groupId>
     <artifactId>softus-parent</artifactId>
     <version>1</version>
+    <relativePath />
   </parent>
 
   <groupId>org.softus.cdi.transaction</groupId>
-  <artifactId>transaction-parent</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <artifactId>transaction-cdi</artifactId>
+  <version>1.1.0-SNAPSHOT</version>
 
-  <packaging>pom</packaging>
-
-  <name>CDI Transaction Parent</name>
+  <name>CDI Transaction Implementation</name>
   <description>
-    The build aggregator for CDI Transaction.
+    CDI portable extension that allows to use EJB transaction management
+    annotations in CDI managed beans.
   </description>
-  <url>http://code.google.com/p/transaction-cdi</url>
   <inceptionYear>2012</inceptionYear>
-
-  <mailingLists>
-    <mailingList>
-      <name>User Group</name>
-      <archive>http://groups.google.com/group/transaction-cdi-user</archive>
-      <subscribe>transaction-cdi-user+subscribe@googlegroups.com</subscribe>
-      <unsubscribe>transaction-cdi-user+unsubscribe@googlegroups.com</unsubscribe>
-      <post>transaction-cdi-user@googlegroups.com</post>
-    </mailingList>
-  </mailingLists>
 
   <licenses>
     <license>
@@ -57,14 +46,14 @@
   </licenses>
 
   <scm>
-    <url>http://code.google.com/p/transaction-cdi/source/browse</url>
-    <connection>scm:git:http://code.google.com/p/transaction-cdi</connection>
-    <developerConnection>scm:git:https://code.google.com/p/transaction-cdi</developerConnection>
+    <url>http://github.com/arkhipov/transaction-cdi</url>
+    <connection>scm:git:https://github.com/arkhipov/transaction-cdi.git</connection>
+    <developerConnection>scm:git:https://github.com/arkhipov/transaction-cdi.git</developerConnection>
   </scm>
 
   <issueManagement>
-    <system>Google Code</system>
-    <url>http://code.google.com/p/transaction-cdi/issues</url>
+    <system>GitHub Issue Management</system>
+    <url>https://github.com/arkhipov/transaction-cdi/issues</url>
   </issueManagement>
 
   <developers>
@@ -80,16 +69,45 @@
     </developer>
   </developers>
 
-  <modules>
-    <module>impl</module>
-  </modules>
+  <build>
+    <!-- Generate OSGi Manifest. -->
+    <plugins>
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>bundle-manifest</id>
+            <phase>process-classes</phase>
+            <goals>
+              <goal>manifest</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <instructions>
+            <Bundle-SymbolicName>${project.groupId}</Bundle-SymbolicName>
+            <Build-Timestamp>${build.datetime}</Build-Timestamp>
+          </instructions>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <useDefaultManifestFile>true</useDefaultManifestFile>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 
   <dependencyManagement>
     <dependencies>
       <dependency>
         <groupId>org.jboss.spec</groupId>
         <artifactId>jboss-javaee-6.0</artifactId>
-        <version>3.0.1.Final</version>
+        <version>3.0.2.Final</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -97,8 +115,39 @@
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-api</artifactId>
-        <version>1.6.4</version>
+        <version>1.7.5</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
+
+  <dependencies>
+    <dependency>
+      <groupId>javax.enterprise</groupId>
+      <artifactId>cdi-api</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jboss.spec.javax.ejb</groupId>
+      <artifactId>jboss-ejb-api_3.1_spec</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jboss.spec.javax.transaction</groupId>
+      <artifactId>jboss-transaction-api_1.1_spec</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jboss.spec.javax.annotation</groupId>
+      <artifactId>jboss-annotations-api_1.1_spec</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+    </dependency>
+  </dependencies>
 </project>

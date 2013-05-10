@@ -1,0 +1,1 @@
+CDI portable extension that allows to use EJB transaction management annotations in CDI managed beans.
