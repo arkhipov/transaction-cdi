@@ -45,7 +45,7 @@ import org.softus.cdi.transaction.Transactional;
  *
  * @author Vlad Arkhipov
  */
-class TransactionExtension
+public class TransactionExtension
 implements Extension
 {
     private Map<Method, TransactionAttributeType> transactionAttributes;
@@ -53,7 +53,7 @@ implements Extension
     /**
      * Creates a new extension.
      */
-    TransactionExtension()
+    public TransactionExtension()
     {
         transactionAttributes = new HashMap<Method, TransactionAttributeType>();
     }
